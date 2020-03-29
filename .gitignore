@@ -1,0 +1,10 @@
+/data/database.sqlite
+/logs/*
+/vendor/*
+log
+*.log
+.idea
+*.sqlite
+finish
+vendor
+app/cache
