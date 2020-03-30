@@ -12,4 +12,17 @@ use Doctrine\ORM\EntityRepository;
  */
 class CategoryRepository extends EntityRepository
 {
+    public function findAllOrdered()
+    {
+        $dql = "select cat from AppBundle\Entity\Category cat order  by cat.name desc";
+
+        $query = $this->getEntityManager()->createQuery($dql);
+//        var_dump($query->getSQL());
+
+        return $query->execute();
+
+
+
+
+    }
 }
