@@ -17,6 +17,8 @@ class CategoryRepository extends EntityRepository
 //        $dql = "select cat from AppBundle\Entity\Category cat order  by cat.name desc";
 
         $qb = $this->createQueryBuilder('cat')
+            ->leftJoin('cat.fortuneCookies', 'fc')
+            ->addSelect('fc')
             ->addOrderBy('cat.name', 'DESC');
 
         $query = $qb->getQuery();
@@ -36,9 +38,26 @@ class CategoryRepository extends EntityRepository
     {
         return $this->createQueryBuilder('cat')
 //            ->andWhere('cat.name = :searchItem')
-            ->andWhere('cat.name LIKE :searchItem OR cat.iconKey like :searchItem')
+            ->andWhere('cat.name LIKE :searchItem 
+                        OR cat.iconKey like :searchItem
+                        OR fc.fortune like :searchItem
+                        ')
+            ->leftJoin('cat.fortuneCookies', 'fc')
+            ->addSelect('fc')
             ->setParameter('searchItem', '%' . $term . '%')
             ->getQuery()
             ->execute();
+    }
+
+    public function findWithFortunesJoin($id)
+    {
+        return $this->createQueryBuilder('cat')
+            ->andWhere('cat.id = :id')
+            ->leftJoin('cat.fortuneCookies', 'fc')
+            ->addSelect('fc')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
+
     }
 }

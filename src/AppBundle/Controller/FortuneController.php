@@ -40,7 +40,7 @@ class FortuneController extends Controller
             ->getManager()
             ->getRepository('AppBundle:Category');
 
-        $category = $categoryRepository->find($id);
+        $category = $categoryRepository->findWithFortunesJoin($id);
 
         if (!$category) {
             throw $this->createNotFoundException();
