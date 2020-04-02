@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Entity\Category;
+use AppBundle\Entity\FortuneCookie;
 
 class FortuneController extends Controller
 {
@@ -46,8 +47,15 @@ class FortuneController extends Controller
             throw $this->createNotFoundException();
         }
 
+
+        $fortunesPrinted = $this->getDoctrine()
+        ->getRepository("AppBundle\Entity\Fortunecookie")
+        ->countNumberPrintedForCategory($category);
+        var_dump($fortunesPrinted);
+
         return $this->render('fortune/showCategory.html.twig',[
-            'category' => $category
+            'category' => $category,
+            'fortunePrintted' => $fortunesPrinted
         ]);
     }
 }
